@@ -1,0 +1,10 @@
+-- DEPRECATED single-file migration.
+-- It assumed public.users / events / registrations already existed, which is not true on a
+-- fresh Supabase project. Use the ordered files instead:
+--   1) supabase/migrations/20261006000000_campusone_initial_schema.sql
+--   2) supabase/migrations/20261006000100_campusone_features.sql
+--   3) supabase/migrations/20261006000200_campusone_security_hardening.sql
+--   4) supabase/migrations/20261006000300_campusone_event_approval_and_club_privacy.sql
+--   5) supabase/migrations/20261006000400_campusone_final_hardening.sql
+--   6) supabase/migrations/20261006000500_campusone_registration_update_guard.sql
+-- or paste supabase/campusone_full_setup.sql (generated; all six) into the SQL editor.
