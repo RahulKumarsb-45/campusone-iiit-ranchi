@@ -37,7 +37,7 @@ type ProfileResult = { profile: UserType; error: null } | { profile: null; error
 async function fetchProfile(id: string): Promise<{ row: UserType | null; failed: boolean }> {
   const { data, error } = await supabase.from("users").select("*").eq("id", id).maybeSingle()
   if (error) {
-    console.error("Profile load failed", error.code)
+    console.error("Profile load failed", error.code, error.message)
     return { row: null, failed: true }
   }
   return { row: (data as UserType | null) ?? null, failed: false }
@@ -68,7 +68,7 @@ async function loadProfile(authUser: AuthUser): Promise<ProfileResult> {
     },
   ])
   if (insertError && insertError.code !== "23505") {
-    console.error("Could not create profile row", insertError.code)
+    console.error("Could not create profile row", insertError.code, insertError.message)
     return { profile: null, error: PROFILE_ERROR }
   }
   const second = await fetchProfile(authUser.id)
@@ -135,6 +135,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email,
         password,
         options: {
+          // FIX: confirmation link ab isi app ke /auth/callback par aayega (localhost:3001), default :3000 par nahi.
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
           data: {
             name: userData.name,
             role,
